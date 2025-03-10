@@ -24,7 +24,7 @@ class Game {
 
         // Carrega o novo nível
         this.currentLevel = level;
-        level.setup();
+        level.setup(); 
     }
 
     render() {
