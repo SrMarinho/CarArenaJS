@@ -2,18 +2,15 @@ import * as THREE from 'three'
 import { GLTFLoader } from "three/examples/jsm/Addons.js"
 import { setupCameraControls } from "../controllers/cameraController.js"
 import { setupCarControls } from "../controllers/carController.js"
+import Car from '../objects/Car.js'
+import Fence from '../objects/Fence.js'
+
 
 class Level1 {
     constructor(scene, camera) {
         this.scene = scene
         this.camera = camera
-        this.objs = {
-            car: undefined,
-            fence: undefined,
-        }
-        this.car = undefined
-        this.carControls = undefined
-        this.fence = undefined
+        this.objs = {}
     }
 
     setup() {
@@ -30,15 +27,7 @@ class Level1 {
         
         setupCameraControls(this.camera)
         
-        loader.load("/CarHatchback.glb", (glb) => {
-            this.car = glb.scene
-            this.car.position.y = 0.1
-            this.scene.add(this.car)
-            this.carControls = setupCarControls(this.car)
-            // this.camera.lookAt(this.car)
-        }, undefined, function (error) {
-            console.error(error);
-        });
+        this.loadCar()
         
         loader.load("/Fence.glb", (glb) => {
             this.fence = glb.scene
@@ -78,6 +67,15 @@ class Level1 {
         if (this.fence) {
             this.scene.add(this.fence)
         }
+    }
+
+    loadCar() {
+        const car = Car.getInstance()
+        
+        car.onLoad((model) => {
+            this.objs.car = model
+        })
+        // this.carControls = setupCarControls(this.car)
     }
 }
 

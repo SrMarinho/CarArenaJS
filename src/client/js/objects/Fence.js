@@ -52,6 +52,4 @@ class Fence {
     }
 }
 
-// Exemplo de uso:
-const fenceInstance = new Fence(); // ou Fence.getInstance()
-const fenceModel = fenceInstance.getModel();
+export default Fence

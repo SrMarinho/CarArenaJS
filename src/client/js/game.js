@@ -11,13 +11,12 @@ class Game {
         this.currentLevel = null;
 
         // this.controls = new THREE.OrbitControls(this.camera, this.canvas);
-        window.addEventListener('resize', () => this.resize());
+        window.addEventListener('resize', () => this.resize(canvas));
     }
 
     init() {}
 
     loadLevel(level) {
-        // Limpa a cena atual
         while (this.scene.children.length > 0) {
             this.scene.remove(this.scene.children[0]);
         }
@@ -36,9 +35,9 @@ class Game {
         this.renderer.render(this.scene, this.camera);
     }
 
-    resize() {
-        const width = this.canvas.clientWidth;
-        const height = this.canvas.clientHeight;
+    resize(canvas) {
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
         this.renderer.setSize(width, height);
         this.camera.aspect = width / height;
         this.camera.updateProjectionMatrix();

@@ -3,6 +3,7 @@ import { GLTFLoader } from "three/examples/jsm/Addons.js";
 class Car {
     static #instance = null;
 
+    #onLoadCallback = null;
     #model = undefined;
     #isLoaded = false;
 
@@ -11,26 +12,28 @@ class Car {
             return Car.#instance;
         }
 
-        Car.#instance = this; // Armazena a instância única
+        Car.#instance = this;
 
-        // Inicia o carregamento do modelo automaticamente
         this.#init();
     }
 
     async #init() {
         if (this.#isLoaded) {
-            console.log("O modelo já foi carregado.");
             return;
         }
 
         const loader = new GLTFLoader();
 
         try {
-            const glb = await loader.loadAsync("/CarHatchback.glb"); // Carrega o modelo de forma assíncrona
+            const glb = await loader.loadAsync("/CarHatchback.glb");
+            
             this.#model = glb.scene;
             this.#model.position.y = 0.1;
-            this.#isLoaded = true; // Marca o modelo como carregado
-            console.log("Modelo carregado com sucesso!");
+            this.#isLoaded = true;
+
+            if (this.#onLoadCallback) {
+                this.#onLoadCallback(this.#model); // Chama o callback quando o modelo é carregado
+            }
         } catch (error) {
             console.error("Erro ao carregar o modelo:", error);
         }
@@ -38,10 +41,11 @@ class Car {
 
     getModel() {
         if (!this.#isLoaded) {
-            console.warn("O modelo ainda não foi carregado.");
             return null;
         }
-        return this.#model; // Retorna o modelo carregado
+        console.log(this.#model);
+        
+        return this.#model;
     }
 
     static getInstance() {
@@ -50,4 +54,10 @@ class Car {
         }
         return Car.#instance;
     }
+
+    onLoad(callback) {
+        this.#onLoadCallback = callback;
+    }
 }
+
+export default Car
