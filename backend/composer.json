@@ -1,0 +1,17 @@
+{
+    "name": "matheus.silva/backend",
+    "autoload": {
+        "psr-4": {
+            "MatheusSilva\\Backend\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Matheus Marinho",
+            "email": "temarinho76@gmail.com"
+        }
+    ],
+    "require": {
+        "cboden/ratchet": "^0.4.4"
+    }
+}

@@ -11,7 +11,7 @@ class Car {
         if (Car.#instance) {
             return Car.#instance;
         }
-
+        this.path = "/models/CarHatchback.glb"
         Car.#instance = this;
 
         this.#init();
@@ -25,14 +25,14 @@ class Car {
         const loader = new GLTFLoader();
 
         try {
-            const glb = await loader.loadAsync("/CarHatchback.glb");
+            const glb = await loader.loadAsync(this.path);
             
             this.#model = glb.scene;
             this.#model.position.y = 0.1;
             this.#isLoaded = true;
 
             if (this.#onLoadCallback) {
-                this.#onLoadCallback(this.#model); // Chama o callback quando o modelo é carregado
+                this.#onLoadCallback(this.#model);
             }
         } catch (error) {
             console.error("Erro ao carregar o modelo:", error);

@@ -29,14 +29,16 @@ class Level1 {
         
         this.loadCar()
         
-        loader.load("/Fence.glb", (glb) => {
+        loader.load("/models/Fence.glb", (glb) => {
             this.fence = glb.scene
             this.fence.scale.set(0.1, 0.1, 0.1)
-            this.scene.add(this.fence) // Adiciona a cerca à cena
-        }, undefined, function (error) {
+
+            this.scene.add(this.fence)
+        }, undefined, (error) => {
             console.error(error);
         });
         
+        this.camera.position.z = -1
         // this.camera.position.y = 0.1
         // this.camera.position.z = -10
     }
@@ -74,8 +76,9 @@ class Level1 {
         
         car.onLoad((model) => {
             this.objs.car = model
+            this.scene.add(model)
+            this.carControls = setupCarControls(this.car)
         })
-        // this.carControls = setupCarControls(this.car)
     }
 }
 
