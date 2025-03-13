@@ -2,7 +2,7 @@
     "name": "cararena/backend",
     "autoload": {
         "psr-4": {
-            "Backend\\App": "src/"
+            "App\\": "src/"
         }
     },
     "authors": [

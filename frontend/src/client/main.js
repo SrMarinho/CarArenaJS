@@ -2,6 +2,7 @@ import * as THREE from "three";
 import Game from './js/game.js';
 import { setupLights } from './js/lights/lights.js';
 import Level1 from './js/scenes/level1.js'
+import { socket, sendMessage } from "./js/network/websocket.js";
 
 
 const main = async () => {
@@ -24,4 +25,4 @@ const main = async () => {
     game.render()
 }
 
-window.addEventListener("load", main)
+// window.addEventListener("load", main)
