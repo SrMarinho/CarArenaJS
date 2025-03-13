@@ -1,8 +1,8 @@
 {
-    "name": "matheus.silva/backend",
+    "name": "cararena/backend",
     "autoload": {
         "psr-4": {
-            "MatheusSilva\\Backend\\": "src/"
+            "Backend\\App": "src/"
         }
     },
     "authors": [

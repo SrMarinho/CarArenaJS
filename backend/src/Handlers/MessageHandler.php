@@ -16,6 +16,8 @@ class MessageHandler {
             if ($client !== $from) {
                 $client->send($msg); // Envia a mensagem para todos os outros clientes
             }
+            print_r("\n");
+            print_r($msg);
         }
     }
 }
