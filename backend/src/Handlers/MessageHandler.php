@@ -5,7 +5,7 @@ use Ratchet\ConnectionInterface;
 use App\Core\ConnectionManager;
 
 class MessageHandler {
-    protected $connectionManager;
+    protected ConnectionManager $connectionManager;
 
     public function __construct(ConnectionManager $connectionManager) {
         $this->connectionManager = $connectionManager;
@@ -14,7 +14,7 @@ class MessageHandler {
     public function handle(ConnectionInterface $from, $msg) {
         foreach ($this->connectionManager->getConnections() as $client) {
             if ($client !== $from) {
-                $client->send($msg); // Envia a mensagem para todos os outros clientes
+                $client->send($msg);
             }
             print_r("\n");
             print_r($msg);
