@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\GameMatchState;
+
 class GameMatch {
     private $id;
     private $players = [];
@@ -9,7 +11,7 @@ class GameMatch {
 
     public function __construct($id) {
         $this->id = $id;
-        $this->status = 'waiting';
+        $this->status = GameMatchState::WAITING;
     }
 
     public function getId() {
@@ -36,5 +38,19 @@ class GameMatch {
 
     public function getStatus() {
         return $this->status;
+    }
+
+    public function toArray() {
+        $match = [
+            "id" => $this->id,
+            "staus" => $this->status,
+            "players" => []
+        ];
+
+        foreach ($this->players as $player) {
+            $match['players'][] = $player->toArray();
+        }
+
+        return $match;
     }
 }

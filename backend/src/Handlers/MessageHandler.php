@@ -11,11 +11,9 @@ class MessageHandler {
         $this->connectionManager = $connectionManager;
     }
 
-    public function handle(ConnectionInterface $from, $msg) {
-        foreach ($this->connectionManager->getConnections() as $client) {
-            if ($client !== $from) {
-                $client->send($msg);
-            }
+    public function handle(ConnectionInterface $from, string $msg, array $toList) {
+        foreach ($toList as $client) {
+            $client->send($msg);
         }
     }
 }

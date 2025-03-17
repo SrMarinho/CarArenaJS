@@ -16,8 +16,6 @@ class GameServer implements MessageComponentInterface
     protected $matchManager;
     protected $matchService;
 
-    private $matchId = 1;
-
     public function __construct(
         ConnectionManager $connectionManager,
         $messageHandler,
@@ -28,7 +26,6 @@ class GameServer implements MessageComponentInterface
         $this->connectionManager = $connectionManager;
         $this->messageHandler = $messageHandler;
         $this->errorHandler = $errorHandler;
-        $this->connectionManager = $connectionManager;
         $this->playerService = $playerService;
         $this->matchService = $matchService;
     }
@@ -44,34 +41,85 @@ class GameServer implements MessageComponentInterface
         $this->playerService->registerPlayer($player);
 
         echo "Novo jogador conectado: {$playerId} ({$username})\n";
-
-        $matchId = 1;
-        if (!$this->matchService->getMatch($matchId)) {
-            $this->matchService->createNewMatch($matchId);
-        }
-        $this->matchService->addPlayerToMatch($matchId, $player);
-
-        $data = [
-            "type" => "playerJoined",
-            "matchId" => $matchId,
-            "player" => $player->toArray()
-        ];
-
-        $this->messageHandler->handle($conn, json_encode($data));
-
-        // $welcomeMessage = [
-        //     "msg" => "Bem-vindo ao jogo, {$username}! Você foi adicionado à partida {$matchId}."
-        // ];
-        // $conn->send(json_encode($welcomeMessage));
     }
 
     public function onMessage(ConnectionInterface $from, $msg): void
     {
         $data = json_decode($msg, true);
+
+        if (!isset($data['type'])) {
+            return;
+        }
+
+        switch ($data['type']) {
+            case 'createMatch':
+                $this->handleCreateMatch($from, $data);
+                break;
+
+            case 'match':
+                $this->handleMatchMessage($from, $data);
+                break;
+
+            case 'private':
+                $this->handlePrivateMessage($from, $data);
+                break;
+
+            default:
+                // Lógica para tipos de mensagem desconhecidos
+                break;
+        }
+
+        try {
+            $this->messageHandler->handle($from, $msg);
+        } catch (\Throwable $th) {
+            // Tratar exceção
+        }
+    }
+
+    private function handleCreateMatch(ConnectionInterface $from, array $data): void
+    {
         $playerId = $from->resourceId;
-        $player = $this->playerService->getPlayer($playerId);
-        $data["id"] = $player->getId();
-        $this->messageHandler->handle($from, json_encode($data));
+        $player = $this->playerManager->getPlayer($playerId);
+
+        if (!$player) {
+            return;
+        }
+
+        $this->playerService->registerPlayer($player);
+
+        $matchId = 1; // Isso poderia ser gerado dinamicamente
+        $this->matchService->createNewMatch($matchId);
+        $this->matchService->addPlayerToMatch($matchId, $player);
+
+        $match = $this->matchManager->getMatch($matchId);
+
+        if (!$match) {
+            return;
+        }
+
+        $from->send(json_encode($match->toArray()));
+    }
+
+    private function handleMatchMessage(ConnectionInterface $from, array $data): void
+    {
+        if (!isset($from->resourceId)) {
+            return;
+        }
+        $playerId = $from->resourceId;
+        $data['from'] = $playerId;
+
+        $matchId = $this->matchService->getMatchIdByPlayer($playerId);
+
+        if (!$matchId) {
+            return;
+        }
+
+        // Lógica adicional para processar mensagens da partida
+    }
+
+    private function handlePrivateMessage(ConnectionInterface $from, array $data): void
+    {
+        // TODO: Implementar lógica de mensagens privadas
     }
 
     public function onClose(ConnectionInterface $conn): void
