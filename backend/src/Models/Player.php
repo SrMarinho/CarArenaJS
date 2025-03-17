@@ -26,7 +26,16 @@ class Player {
         return $this->connection;
     }
 
+    public function toArray() {
+        return [
+            "id"=> $this->id,
+            "username"=> $this->username
+        ];
+    }
+
     public function sendMessage($message) {
-        $this->connection->send($message);
+        $this->connection->send(json_encode([
+            "msg" => $message
+        ]));
     }
 }

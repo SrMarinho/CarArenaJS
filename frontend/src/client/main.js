@@ -10,7 +10,7 @@ const main = async () => {
 
     const game = new Game(canvas)
 
-    const level1 = new Level1(game.scene, game.camera);
+    const level1 = new Level1(game.scene, game.camera, socket);
 
     game.loadLevel(level1)
 
@@ -25,4 +25,4 @@ const main = async () => {
     game.render()
 }
 
-// window.addEventListener("load", main)
+window.addEventListener("load", main)
