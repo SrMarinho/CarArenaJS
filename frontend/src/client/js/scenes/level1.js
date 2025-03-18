@@ -93,12 +93,15 @@ class Level1 {
         if(keys['p']) {
             this.status = MatchState.IN_PROGRESS;
         }
+        if(keys['n']) {
+            console.log("criando partida");
+            this.createMatch()
+        }
     }
 
     matchInProgress() {
         if (this.mainCar) {
             this.carControls.update();
-
         }
 
         Object.values(this.otherPlayers).forEach(player => {
@@ -186,6 +189,12 @@ class Level1 {
             this.scene.remove(player.model); // Remove o modelo do jogador da cena
             delete this.otherPlayers[playerId]; // Remove o jogador da lista
         }
+    }
+
+    createMatch() {
+        this.websocket.send(JSON.stringify({
+            type: "createMatch"
+        }))
     }
 }
 
