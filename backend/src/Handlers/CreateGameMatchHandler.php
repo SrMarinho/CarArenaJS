@@ -18,6 +18,7 @@ class CreateGameMatchHandler implements MessageHandlerInterface {
 
     public function handle(ConnectionInterface $from, array $data): void
     {
+        print_r("player criando partida");
         if (!isset($from->resourceId)) {
             return;
         }
