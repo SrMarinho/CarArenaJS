@@ -117,11 +117,15 @@ class Level1 {
             const position = this.mainCar.position;
             const rotation = this.mainCar.rotation;
 
-            this.websocket.send(JSON.stringify({
-                action: 'playerMoved',
-                position: { x: position.x, y: position.y, z: position.z },
-                rotation: { x: rotation.x, y: rotation.y, z: rotation.z }
-            }));
+            try {
+                this.websocket.send(JSON.stringify({
+                    action: 'playerMoved',
+                    position: { x: position.x, y: position.y, z: position.z },
+                    rotation: { x: rotation.x, y: rotation.y, z: rotation.z }
+                }));
+            } catch (error) {
+                
+            }
         }
     }
 
@@ -144,14 +148,13 @@ class Level1 {
         const car = Car.getInstance();
 
         car.onLoad((model) => {
-            this.mainCar = model; // Define o carro principal
+            this.mainCar = model; 
             this.objs.car = model;
             model.position.x = Math.random() * 10;
             model.position.z = Math.random() * 10;
             this.scene.add(model);
-            this.carControls = setupCarControls(this.mainCar); // Configura os controles do carro principal
+            this.carControls = setupCarControls(this.mainCar);
 
-            // Notifica o servidor que o jogador principal entrou na partida
             this.websocket.send(JSON.stringify({
                 action: 'playerJoined',
                 position: { x: model.position.x, y: model.position.y, z: model.position.z },

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums;
+namespace App\Data;
 
 enum GameMatchState: string
 {

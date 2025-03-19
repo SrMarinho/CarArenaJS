@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\GameMatchState;
+use App\Data\GameMatchState;
 
 class GameMatch {
     private $id;
