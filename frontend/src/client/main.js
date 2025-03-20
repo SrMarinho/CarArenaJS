@@ -7,7 +7,7 @@ import { socket, sendMessage } from "./js/network/websocket.js";
 
 
 const main = async () => {
-    const btnCreateMatch = document.querySelector("mainMenuButton")
+    // const btnCreateMatch = document.querySelector("mainMenuButton")
     const canvas = document.querySelector("#myCanvas");
 
     const game = new Game(canvas)
@@ -21,8 +21,8 @@ const main = async () => {
     setupLights(game.scene);
 
     // game.camera.position.z = -1
-    game.camera.position.y = 0.5
-    game.camera.lookAt(new THREE.Vector3(1, 0, 1))
+    // game.camera.position.y = 0.5
+    // game.camera.lookAt(new THREE.Vector3(1, 0, 1))
 
     game.render()
 }

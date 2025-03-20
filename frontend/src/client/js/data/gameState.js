@@ -60,4 +60,4 @@ function addButton(container, text, onClick) {
     container.appendChild(button);
 }
 
-updateUI();
+// updateUI();

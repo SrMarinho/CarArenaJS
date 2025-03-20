@@ -10,7 +10,7 @@ class Game {
         this.renderer = new THREE.WebGLRenderer({ canvas });
         this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
         this.currentLevel = null;
-        this.status = GameState.MAIN_MENU
+        // this.status = GameState.MAIN_MENU
 
         // this.controls = new THREE.OrbitControls(this.camera, this.canvas);
         window.addEventListener('resize', () => this.resize(canvas));
