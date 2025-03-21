@@ -63,7 +63,7 @@ class MainMenu {
 
         loader.load("/models/CarHatchback.glb", (glb) => {
             const model = glb.scene;
-            model.position.set(3.11, 1.7706516730157273, -6.13)
+            model.position.set(3.03, 1.84, -6.16)
             model.rotation.set(0.54, -0.58, 0)
 
             model.traverse((child) => {
@@ -78,8 +78,7 @@ class MainMenu {
             console.error(error);
         });
         
-        this.camera.position.set(4.19, 2.11, -6.62)
-        // this.objControl = objController(this.camera)
+
         const clouds = new THREE.Group();
 
         // Nuvem 1 (grande)
@@ -105,9 +104,14 @@ class MainMenu {
         // clouds.add(cloud3);
 
         this.scene.add(clouds);
+
+        this.camera.position.set(3.22, 2.50, -6.81)
+        this.camera.rotation.set(-2.80, -0.30, 2.99)
+        // this.objControl = objController(this.camera)
     }
     
     update() {
+        this.camera.rotation.set(-2.80, -0.30, 2.99)
         if (this.objControl) {
             this.objControl.update()
         }

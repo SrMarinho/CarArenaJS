@@ -39,10 +39,10 @@ export function objController(obj) {
         }
 
         if (keys['ArrowLeft']) { // Seta para esquerda: Rotacionar para a esquerda
-            obj.rotation.y += rotateSpeed;
+            obj.rotation.y -= rotateSpeed;
         }
         if (keys['ArrowRight']) { // Seta para direita: Rotacionar para a direita
-            obj.rotation.y -= rotateSpeed;
+            obj.rotation.y += rotateSpeed;
         }
         if (keys['ArrowUp']) { // Seta para cima: Rotacionar para cima
             obj.rotation.x += rotateSpeed;
@@ -50,7 +50,7 @@ export function objController(obj) {
         if (keys['ArrowDown']) { // Seta para baixo: Rotacionar para baixo
             obj.rotation.x -= rotateSpeed;
         }
-        console.log(obj.position, obj.rotation);
+        console.log(obj);
     }
 
     return { update };

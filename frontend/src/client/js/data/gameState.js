@@ -27,6 +27,7 @@ function updateUI() {
         case GameState.MAIN_MENU:
             addButton(mainMenuButton, 'Create Match', () => changeGameState(GameState.MATCH_CREATION));
             addButton(mainMenuButton, 'Join Match', () => changeGameState(GameState.MATCH_JOIN));
+            addButton(mainMenuButton, 'Configurations', () => changeGameState(GameState.MATCH_JOIN));
             break;
         case GameState.MATCH_CREATION:
             addButton(mainMenuButton, 'Confirm Creation', () => console.log('Match created!'));
@@ -60,4 +61,4 @@ function addButton(container, text, onClick) {
     container.appendChild(button);
 }
 
-// updateUI();
+updateUI();

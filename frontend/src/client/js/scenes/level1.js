@@ -118,7 +118,7 @@ class Level1 {
             const rotation = this.mainCar.rotation;
 
             try {
-                this.websocket.send(JSON.stringify({
+                this.websocket.sendMessage(JSON.stringify({
                     action: 'playerMoved',
                     position: { x: position.x, y: position.y, z: position.z },
                     rotation: { x: rotation.x, y: rotation.y, z: rotation.z }
@@ -155,7 +155,7 @@ class Level1 {
             this.scene.add(model);
             this.carControls = setupCarControls(this.mainCar);
 
-            this.websocket.send(JSON.stringify({
+            this.websocket.sendMessage(JSON.stringify({
                 action: 'playerJoined',
                 position: { x: model.position.x, y: model.position.y, z: model.position.z },
                 rotation: { x: model.rotation.x, y: model.rotation.y, z: model.rotation.z }
@@ -195,7 +195,7 @@ class Level1 {
     }
 
     createMatch() {
-        this.websocket.send(JSON.stringify({
+        this.websocket.sendMessage(JSON.stringify({
             type: "createMatch"
         }))
     }
