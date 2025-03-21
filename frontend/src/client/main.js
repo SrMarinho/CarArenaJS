@@ -18,7 +18,7 @@ const main = async () => {
 
     game.scene.background = new THREE.Color( 0x00A6ED )
 
-    setupLights(game.scene);
+    // setupLights(game.scene);
 
     // game.camera.position.z = -1
     // game.camera.position.y = 0.5

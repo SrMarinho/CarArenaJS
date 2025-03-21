@@ -4,6 +4,7 @@ import { setupCameraControls } from "../controllers/cameraController.js";
 import Car from '../objects/Car.js';
 import Rock1 from '../objects/Rock1.js';
 import { keys } from '../keyboard.js';
+import { objController } from '../controllers/objController.js';
 
 class MainMenu {
     constructor(scene, camera) {
@@ -13,114 +14,145 @@ class MainMenu {
         this.objs = {}
     }
 
+
     setup() {
         const loader = new GLTFLoader()
-        const floorGeometry = new THREE.PlaneGeometry(100, 100)
-        const floorMaterial = new THREE.MeshStandardMaterial({
-            color: 0x7FB800,
-            side: THREE.DoubleSide
-        })
-        
-        const floor = new THREE.Mesh(floorGeometry, floorMaterial)
-        floor.rotation.set(Math.PI / 2, 0, 0)
-        // this.scene.add(floor)
 
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1);
         this.scene.add(ambientLight);
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(1, 1, 1).normalize();
-        this.scene.add(directionalLight);       
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+        directionalLight.position.set(-27.81, 10.65, 29.35).normalize();
+        directionalLight.castShadow = true;
+        this.scene.add(directionalLight);
 
-        // this.cameraControl = setupCameraControls(this.camera)
-        
-        // this.loadCar()
-        // this.loadRock1()
+        const directionalLight2 = new THREE.DirectionalLight(0xffeedd, 3);
+        directionalLight2.position.set(20, 15, -20).normalize();
+        this.scene.add(directionalLight2);
+
+        // Luz Pontual 1 - Foco no Carro
+        const pointLightCar = new THREE.PointLight(0xffaa66, 8, 20);
+        pointLightCar.position.set(
+        3.11,
+        1.77,
+        -6.13
+        );
+        pointLightCar.castShadow = true;
+        this.scene.add(pointLightCar);
+
+        const pointLighttscene = new THREE.PointLight(0xffffff, 5, 50);
+        pointLighttscene.position.set(0, 10, 0);
+        this.scene.add(pointLighttscene);
+
+        const hemisphereLight = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+        this.scene.add(hemisphereLight);
 
         loader.load("/models/Low-poly landscape.glb", (glb) => {
-            console.log(glb);
-            
-            const fence = glb.scene;
-            // fence.scale.set(0.1, 0.1, 0.1);
-            this.camera.lookAt(fence.position)
-
-            this.scene.add(fence);
+            const model = glb.scene;
+            this.camera.lookAt(model.position)
+            model.traverse((child) => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+            this.scene.add(model);
         }, undefined, (error) => {
             console.error(error);
         });
 
         loader.load("/models/CarHatchback.glb", (glb) => {
             const model = glb.scene;
-            // fence.scale.set(0.1, 0.1, 0.1);
+            model.position.set(3.11, 1.7706516730157273, -6.13)
+            model.rotation.set(0.54, -0.58, 0)
 
-            // this.originalObjs.car = model
-            // this.objs.car = this.originalObjs.car.clone()
-            // model.rotation.y = Math.PI - Math.PI / 1.5
-            // this.objs.car.rotation.y = Math.PI
-            model.position.set(3, 2, -6.8)
+            model.traverse((child) => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+            // this.objControl = objController(model)
             this.scene.add(model)
         }, undefined, (error) => {
             console.error(error);
         });
         
-        // this.camera.position.z = -0.7
-        // this.camera.position.y = 10
-        // this.camera.position.x = 0.2
+        this.camera.position.set(4.19, 2.11, -6.62)
+        // this.objControl = objController(this.camera)
+        const clouds = new THREE.Group();
 
-        this.camera.position.set(3.83, 2.05, -6.56)
-        // this.camera.position.z = -1
-        // this.camera.position.y = 1
-        // this.camera.position.x = 1
+        // Nuvem 1 (grande)
+        const cloud1 = this.createLowPolyCloud(
+            new THREE.Vector3(-10, 15, -20), // posição x, y, z
+            1.5 // escala
+        );
+        // clouds.add(cloud1);
+
+        // Nuvem 2 (média)
+        const cloud2 = this.createLowPolyCloud(
+            new THREE.Vector3(-0.58, 9.79, 14.79),
+            0.8
+        );
+        // this.objControl = objController(cloud2)
+        clouds.add(cloud2);
+
+        // Nuvem 3 (pequena)
+        const cloud3 = this.createLowPolyCloud(
+            new THREE.Vector3(15, 10, -15),
+            0.8
+        );
+        // clouds.add(cloud3);
+
+        this.scene.add(clouds);
     }
     
     update() {
-        if (this.cameraControl) {
-            this.cameraControl.update()
+        if (this.objControl) {
+            this.objControl.update()
         }
     }
-    
-    loadCar() {
-        const car = Car.getInstance()
+
+    createLowPolyCloud(position = new THREE.Vector3(0, 0, 0), scale = 1) {
+        const cloudGroup = new THREE.Group();
         
-        car.onLoad((model) => {
-            this.originalObjs.car = model
-            this.objs.car = this.originalObjs.car.clone()
-            // model.rotation.y = Math.PI - Math.PI / 1.5
-            this.objs.car.rotation.y = Math.PI
-            this.scene.add(this.objs.car)
-        })
-    }
+        // Configurações base
+        const cloudColor = 0xffffff;
+        const cloudMaterial = new THREE.MeshPhongMaterial({
+            color: cloudColor,
+            transparent: true,
+            opacity: 0.9,
+            flatShading: true
+        });
 
-    loadRock1() {
-        const rock1 = Rock1.getInstance()
-        
-        rock1.onLoad((model) => {
-            // model.position = new THREE.Vector3(0, 0, 0)
-            model.rotation.x = 0
-            model.rotation.y = 0
-            model.rotation.z = 0
+        // Partes da nuvem (esferas combinadas)
+        const cloudParts = [
+            { size: 2, pos: [0, 0, 0] },
+            { size: 1.5, pos: [1.5, 0.8, -0.5] },
+            { size: 1.3, pos: [-1.2, 0.6, 0.3] },
+            { size: 1, pos: [0.5, -0.4, 1] },
+            { size: 0.8, pos: [-1, -0.3, -0.7] }
+        ];
 
-            model.position.x = 0
-            model.position.y = 0
-            model.position.z = 0
-            // model.scale.set(new THREE.Vector3(2, 2, 2))
+        // Criar cada parte da nuvem
+        cloudParts.forEach(part => {
+            const geometry = new THREE.SphereGeometry(
+                part.size * 0.5, 
+                Math.floor(8 * scale), // Reduz detalhes para low poly
+                Math.floor(6 * scale)
+            );
             
-            // console.log(model.position);
-            
-            this.camera.lookAt(new THREE.Vector3(0, 0, 0))
-            this.camera.position.x = -1
+            const mesh = new THREE.Mesh(geometry, cloudMaterial);
+            mesh.position.set(...part.pos);
+            cloudGroup.add(mesh);
+        });
 
-            this.originalObjs.rock1 = model
-            this.objs.rock1 = this.originalObjs.rock1.clone()
-            
-            console.log(model);
-            
-            this.scene.add(this.objs.rock1)
-        })
-    }
+        cloudGroup.position.copy(position);
+        cloudGroup.scale.set(scale, scale, scale);
+        cloudGroup.castShadow = true;
+        cloudGroup.receiveShadow = true;
 
-    menuOptions() {
-        
+        return cloudGroup;
     }
 }
 
