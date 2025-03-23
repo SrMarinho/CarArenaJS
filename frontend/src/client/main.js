@@ -1,12 +1,10 @@
 import * as THREE from "three";
 import Game from './js/game.js';
-import { setupLights } from './js/lights/lights.js';
+import UI from "./js/ui.js";
 import MainMenu from "./js/scenes/main_menu.js";
-import { socket } from "./js/network/websocket.js";
 
 
 const main = async () => {
-    const btnCreateMatch = document.querySelector("mainMenuButton")
     const canvas = document.querySelector("#myCanvas");
     const game = new Game(canvas)
 
@@ -15,6 +13,8 @@ const main = async () => {
     game.loadLevel(mainMenu)
 
     game.scene.background = new THREE.Color( 0x00A6ED )
+
+    const ui = new UI(game) 
 
     game.init()
 }

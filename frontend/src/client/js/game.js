@@ -51,6 +51,7 @@ class Game {
             0.02 // Limiar (threshold)
         );
         this.composer.addPass(bloomPass);
+
     }
 
     render() {
@@ -60,6 +61,8 @@ class Game {
         if (this.currentLevel) this.currentLevel.update();
 
         this.composer.render();
+
+        if (this.ui) this.ui.update()
     }
 
     resize() {
@@ -88,6 +91,9 @@ class Game {
 
         this.camera.aspect = canvasWidth / canvasHeight;
         this.camera.updateProjectionMatrix();
+    }
+    setUI(ui) {
+        this.ui = ui
     }
 }
 
