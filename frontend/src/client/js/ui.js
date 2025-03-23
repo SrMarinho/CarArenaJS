@@ -1,53 +1,58 @@
-import { GameState } from "./data/gameState";
+import { UIStates } from "./data/uiState";
 
 class UI {
-    constructor(game) {
-        this.game = game
-        this.game.setUI(this)
+    constructor() {
+        this.status = UIStates.MAIN_MENU
         this.lastStatus = null
+
+        this.update()
     }
 
-    changeGameState(newState) {
-        this.game.status = newState;
+    setMediator(mediator) {
+        this.mediator = mediator
     }
 
-    getCurrentGameState() {
-        return this.game.status;
+    changeUIStates(state, data = {}) {
+        if (!this.mediator) return
+        this.status = state
+        this.mediator.notify(this, state, data)
+        this.update()
     }
 
     update() {
-        if (this.game.status === this.lastStatus) return
+        if (this.status === this.lastStatus) return
 
-        const mainMenuButton = document.getElementById('mainMenuButton');
-        mainMenuButton.innerHTML = '';
+        const gameUI = document.getElementById('gameUI');
+        gameUI.innerHTML = '';
 
-        switch (this.game.status) {
-            case GameState.MAIN_MENU:
-                this.addButton(mainMenuButton, 'Create Match', () => this.changeGameState(GameState.IN_ROOM));
-                this.addButton(mainMenuButton, 'Join Match', () => this.changeGameState(GameState.MATCH_JOIN));
-                this.addButton(mainMenuButton, 'Configurations', () => this.changeGameState(GameState.MATCH_JOIN));
+        switch (this.status) {
+            case UIStates.MAIN_MENU:
+                this.addButton(gameUI, 'Create Match', () => this.changeUIStates(UIStates.IN_ROOM));
+                this.addButton(gameUI, 'Join Match', () => this.changeUIStates(UIStates.MATCH_JOIN));
+                this.addButton(gameUI, 'Configurations', () => this.changeUIStates(UIStates.MATCH_JOIN));
                 break;
-            case GameState.MATCH_JOIN:
-                this.addButton(mainMenuButton, 'Enter Match Code', () => console.log('Entering match code...'));
-                this.addButton(mainMenuButton, 'Back to Main Menu', () => this.changeGameState(GameState.MAIN_MENU));
+            case UIStates.IN_ROOM:
+                this.addButton(gameUI, 'Enter Match Code', () => console.log('Entering match code...'));
+                this.addButton(gameUI, 'Back to Main Menu', () => this.changeUIStates(UIStates.MAIN_MENU));
                 break;
-            case GameState.IN_ROOM:
-                this.addButton(mainMenuButton, 'Start Game', () => console.log('Starting game...'));
-                this.addButton(mainMenuButton, 'Leave Room', () => this.changeGameState(GameState.MAIN_MENU));
+            case UIStates.JOIN_MATCH:
+                this.addButton(gameUI, 'Enter Match Code', () => console.log('Entering match code...'));
+                this.addButton(gameUI, 'Back to Main Menu', () => this.changeUIStates(UIStates.MAIN_MENU));
+                break;
+            case UIStates.IN_ROOM:
+                this.addButton(gameUI, 'Start Game', () => console.log('Starting game...'));
+                this.addButton(gameUI, 'Leave Room', () => this.changeUIStates(UIStates.MAIN_MENU));
                 // const level = new MatchRoom(game.scene, game.camera)
                 // game.loadLevel(level)
                 break;
-            case GameState.LOBBY:
-                this.addButton(mainMenuButton, 'Ready Up', () => console.log('Player is ready!'));
-                this.addButton(mainMenuButton, 'Leave Lobby', () => this.changeGameState(GameState.MAIN_MENU));
-                break;
-            case GameState.MATCHMAKING:
-                this.addButton(mainMenuButton, 'Cancel Matchmaking', () => this.changeGameState(GameState.MAIN_MENU));
+            case UIStates.LOBBY:
+                this.addButton(gameUI, 'Ready Up', () => console.log('Player is ready!'));
+                this.addButton(gameUI, 'Leave Lobby', () => this.changeUIStates(UIStates.MAIN_MENU));
                 break;
             default:
-                console.error('Estado do jogo desconhecido:', currentGameState);
+                console.error('Estado do jogo desconhecido:', currentUIStates);
         }
-        this.lastStatus = this.game.status
+        this.lastStatus = this.status
     }
 
     addButton(container, text, onClick) {

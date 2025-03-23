@@ -32,7 +32,6 @@ class Game {
     }
 
     loadLevel(level) {
-        console.log("Loading level...");
         while (this.scene.children.length > 0) {
             this.scene.remove(this.scene.children[0]);
         }
@@ -61,8 +60,6 @@ class Game {
         if (this.currentLevel) this.currentLevel.update();
 
         this.composer.render();
-
-        if (this.ui) this.ui.update()
     }
 
     resize() {
@@ -92,8 +89,9 @@ class Game {
         this.camera.aspect = canvasWidth / canvasHeight;
         this.camera.updateProjectionMatrix();
     }
-    setUI(ui) {
-        this.ui = ui
+
+    setMediator(mediator) {
+        this.mediator = mediator
     }
 }
 

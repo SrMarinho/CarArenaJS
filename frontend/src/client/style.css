@@ -17,12 +17,12 @@ body {
   background-color: black;
 }
 
-#myCanvas {
+#gameCanvas {
   width: calc(100vw * var(--game-scale));
   height: calc(100vw * var(--game-scale) * var(--aspect-ratio));
 }
 
-#mainMenuButton {
+#gameUI {
   position: absolute;
   z-index: 999;
   display: flex;
