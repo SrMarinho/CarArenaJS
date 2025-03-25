@@ -1,5 +1,3 @@
-import MatchRoom from "../scenes/match_room.js";
-
 export const GameState = Object.freeze({
     MAIN_MENU: "main_menu",
     MATCH_CREATION: "match_creation",

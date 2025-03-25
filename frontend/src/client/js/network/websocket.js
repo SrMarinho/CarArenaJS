@@ -1,11 +1,11 @@
 export const socketUrl = 'ws://127.0.0.1:8081';
 const TRY_RECONNECT_TIME = 300000
 
-export let socket = new WebSocket(socketUrl);
+export let ws = new WebSocket(socketUrl);
 
 export const sendMessage = (data) => {
-    if (socket.readyState === WebSocket.OPEN) {
-        socket.send(data);
+    if (ws.readyState === WebSocket.OPEN) {
+        ws.send(data);
     } else {
         console.log("Socket não conectado");
     }
@@ -13,11 +13,11 @@ export const sendMessage = (data) => {
 
 const reconnect = () => {
     console.log("Tentando reconectar...");
-    socket = new WebSocket(socketUrl);
+    ws = new WebSocket(socketUrl);
 
-    socket.onopen = onOpen;
-    socket.onerror = onError;
-    socket.onclose = onClose;
+    ws.onopen = onOpen;
+    ws.onerror = onError;
+    ws.onclose = onClose;
 };
 
 const onOpen = () => {
@@ -34,9 +34,9 @@ const onClose = () => {
     setTimeout(reconnect, TRY_RECONNECT_TIME);
 };
 
-socket.onopen = onOpen;
-socket.onerror = onError;
-socket.onclose = onClose;
+ws.onopen = onOpen;
+ws.onerror = onError;
+ws.onclose = onClose;
 
 // socket.onopen = function (event) {
 //     socket.send(JSON.stringify({

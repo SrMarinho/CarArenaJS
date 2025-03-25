@@ -1,8 +1,9 @@
-import { UIStates } from "./data/uiState";
+import { GameState } from "./data/gameState"
 
 class UI {
     constructor() {
-        this.status = UIStates.MAIN_MENU
+        this.gameUI = document.getElementById('gameUI');
+        this.status = GameState.MAIN_MENU
         this.lastStatus = null
 
         this.update()
@@ -12,7 +13,7 @@ class UI {
         this.mediator = mediator
     }
 
-    changeUIStates(state, data = {}) {
+    changeState(state, data = {}) {
         if (!this.mediator) return
         this.status = state
         this.mediator.notify(this, state, data)
@@ -22,37 +23,40 @@ class UI {
     update() {
         if (this.status === this.lastStatus) return
 
-        const gameUI = document.getElementById('gameUI');
         gameUI.innerHTML = '';
 
+        console.log(this.status);
+        
         switch (this.status) {
-            case UIStates.MAIN_MENU:
-                this.addButton(gameUI, 'Create Match', () => this.changeUIStates(UIStates.IN_ROOM));
-                this.addButton(gameUI, 'Join Match', () => this.changeUIStates(UIStates.MATCH_JOIN));
-                this.addButton(gameUI, 'Configurations', () => this.changeUIStates(UIStates.MATCH_JOIN));
+            case GameState.MAIN_MENU:
+                this.addButton(this.gameUI, 'Create Match', () => this.changeState(GameState.MATCH_CREATION));
+                this.addButton(this.gameUI, 'Join Match', () => this.changeState(GameState.MATCH_JOIN));
+                this.addButton(this.gameUI, 'Configurations', () => this.changeState(GameState.MATCH_JOIN));
                 break;
-            case UIStates.IN_ROOM:
-                this.addButton(gameUI, 'Enter Match Code', () => console.log('Entering match code...'));
-                this.addButton(gameUI, 'Back to Main Menu', () => this.changeUIStates(UIStates.MAIN_MENU));
+            case GameState.MATCH_CREATION:
+                this.addButton(this.gameUI, 'Enter Match Code', () => console.log('Entering match code...'));
+                this.addButton(this.gameUI, 'Back to Main Menu', () => this.changeState(GameState.MAIN_MENU));
                 break;
-            case UIStates.JOIN_MATCH:
-                this.addButton(gameUI, 'Enter Match Code', () => console.log('Entering match code...'));
-                this.addButton(gameUI, 'Back to Main Menu', () => this.changeUIStates(UIStates.MAIN_MENU));
+            case GameState.IN_ROOM:
+                this.addButton(this.gameUI, 'Enter Match Code', () => console.log('Entering match code...'));
+                this.addButton(this.gameUI, 'Back to Main Menu', () => this.changeState(GameState.MAIN_MENU));
                 break;
-            case UIStates.IN_ROOM:
-                this.addButton(gameUI, 'Start Game', () => console.log('Starting game...'));
-                this.addButton(gameUI, 'Leave Room', () => this.changeUIStates(UIStates.MAIN_MENU));
-                // const level = new MatchRoom(game.scene, game.camera)
-                // game.loadLevel(level)
+            case GameState.JOIN_MATCH:
+                this.addButton(this.gameUI, 'Enter Match Code', () => console.log('Entering match code...'));
+                this.addButton(this.gameUI, 'Back to Main Menu', () => this.changeState(GameState.MAIN_MENU));
                 break;
-            case UIStates.LOBBY:
-                this.addButton(gameUI, 'Ready Up', () => console.log('Player is ready!'));
-                this.addButton(gameUI, 'Leave Lobby', () => this.changeUIStates(UIStates.MAIN_MENU));
+            case GameState.LOBBY:
+                this.addButton(this.gameUI, 'Ready Up', () => console.log('Player is ready!'));
+                this.addButton(this.gameUI, 'Leave Lobby', () => this.changeState(GameState.MAIN_MENU));
                 break;
             default:
-                console.error('Estado do jogo desconhecido:', currentUIStates);
+                console.error('Estado do jogo desconhecido:');
         }
         this.lastStatus = this.status
+    }
+
+    createRoom() {
+
     }
 
     addButton(container, text, onClick) {
