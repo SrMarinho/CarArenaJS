@@ -18,7 +18,7 @@ const main = async () => {
     const ui = new UI() 
 
     const gameMediator = new GameMediator(game, ui)
-
+    
     game.init()
 }
 
