@@ -5,7 +5,6 @@ class GameMediator {
     constructor(game, ui) {
         this.game = game
         this.ui = ui
-
         this.setup()
     }
 

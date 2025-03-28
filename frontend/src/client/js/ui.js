@@ -1,4 +1,4 @@
-import { GameState } from "./data/gameState"
+import { GameState } from "./data/gameState";
 
 class UI {
     constructor() {
@@ -23,7 +23,7 @@ class UI {
     update() {
         if (this.status === this.lastStatus) return
 
-        gameUI.innerHTML = '';
+        this.gameUI.innerHTML = '';
 
         console.log(this.status);
         
