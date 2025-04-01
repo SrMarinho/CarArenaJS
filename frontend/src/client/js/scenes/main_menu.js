@@ -1,10 +1,10 @@
 import * as THREE from 'three'
 import { GLTFLoader } from "three/examples/jsm/Addons.js"
-import { setupCameraControls } from "../controllers/cameraController.js";
-import Car from '../objects/Car.js';
-import Rock1 from '../objects/Rock1.js';
-import { keys } from '../keyboard.js';
-import { objController } from '../controllers/objController.js';
+import { setupCameraControls } from "../controllers/camera.js";
+import Car from '../entities/Car.js';
+import Rock1 from '../entities/Rock1.js';
+import { keys } from '../core/keyboard.js';
+import { objController } from '../controllers/obj.js';
 
 class MainMenu {
     constructor(scene, camera) {
@@ -17,6 +17,8 @@ class MainMenu {
 
     setup() {
         const loader = new GLTFLoader()
+
+        this.scene.background = new THREE.Color( 0x00A6ED )
 
         const ambientLight = new THREE.AmbientLight(0xffffff, 1);
         this.scene.add(ambientLight);

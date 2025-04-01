@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { keys } from "../keyboard"
+import { keys } from '../core/keyboard.js';
 
 export function objController(obj) {
     const moveSpeed = 0.02;
