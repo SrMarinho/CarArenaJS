@@ -1,4 +1,5 @@
 import { GameState } from "../data/gameState";
+import './pages/main_menu';
 
 class UI {
     constructor() {
@@ -44,46 +45,47 @@ class UI {
     }
 
     renderMainMenu() {
-        this.clear()
-        this.addButton(this.gameUI, 'Create Match', () => this.changeState(GameState.MATCH_CREATION));
-        this.addButton(this.gameUI, 'Join Match', () => this.changeState(GameState.JOIN_MATCH));
-        this.addButton(this.gameUI, 'Configurations', () => this.changeState(GameState.CONFIGURATIONS));
+        this.clear();
+        
+        const menu = document.createElement('main-menu');
+        
+        this.gameUI.appendChild(menu);
     }
 
     renderMatchCreation() {
-        this.gameUI.innerHTML = "<h1>Criar Partida</h1>";
+        this.clear()
         this.addButton(this.gameUI, 'Confirm Creation', () => this.mediator.notify("ui", "createMatch"));
         this.addButton(this.gameUI, 'Back to Main Menu', () => this.changeState(GameState.MAIN_MENU));
     }
 
     renderJoinMatch() {
-        this.gameUI.innerHTML = "<h1>Entrar em Partida</h1>";
+        this.clear()
         const matchCodeInput = this.addInput(this.gameUI, 'Match Code', 'text', 'Digite o código da partida');
         this.addButton(this.gameUI, 'Join', () => this.handleJoinMatch(matchCodeInput.value));
         this.addButton(this.gameUI, 'Back to Main Menu', () => this.changeState(GameState.MAIN_MENU));
     }
 
     renderInRoom(data = {}) {
-        this.gameUI.innerHTML = `<h1>Sala da Partida - Código: ${data.roomCode || 'N/A'}</h1>`;
+        this.clear()
         this.addButton(this.gameUI, 'Start Match', () => this.mediator.notify("ui", "startMatch"));
         this.addButton(this.gameUI, 'Leave Room', () => this.changeState(GameState.MAIN_MENU));
     }
 
     renderLobby() {
-        this.gameUI.innerHTML = "<h1>Lobby</h1>";
+        this.clear()
         this.addButton(this.gameUI, 'Ready Up', () => this.mediator.notify("ui", "playerReady"));
         this.addButton(this.gameUI, 'Leave Lobby', () => this.changeState(GameState.MAIN_MENU));
     }
 
     renderConfigurations() {
-        this.gameUI.innerHTML = "<h1>Configurações</h1>";
+        this.clear()
         const nameInput = this.addInput(this.gameUI, 'Player Name', 'text', 'Seu nome');
         this.addButton(this.gameUI, 'Save Settings', () => this.mediator.notify("ui", "saveSettings", { name: nameInput.value }));
         this.addButton(this.gameUI, 'Back to Main Menu', () => this.changeState(GameState.MAIN_MENU));
     }
 
     renderUnknownState() {
-        this.gameUI.innerHTML = "<h1>Estado Desconhecido</h1>";
+        this.clear()
         this.addButton(this.gameUI, 'Back to Main Menu', () => this.changeState(GameState.MAIN_MENU));
     }
 
