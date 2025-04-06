@@ -1,5 +1,5 @@
 import { GameState } from "../data/gameState";
-import './pages/main_menu';
+import './pages/mainMenu';
 
 class UI {
     constructor() {
