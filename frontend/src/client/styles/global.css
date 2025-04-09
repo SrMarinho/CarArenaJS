@@ -25,35 +25,4 @@ body {
 #gameUI {
   position: absolute;
   z-index: 999;
-  display: flex;
-  flex-direction: column;
-  gap: calc(1vw * var(--game-scale));
-  left: calc(50vw - (25vw * var(--game-scale)));
-  top: calc(50vh);
-  transform: translate(-50%, -50%);
-}
-
-.btnMenuOption {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: calc(40vw * var(--game-scale));
-  height: calc(20vw * var(--aspect-ratio) * var(--game-scale));
-  outline: none;
-  padding-top: calc(5px * var(--game-scale));
-  padding-bottom: calc(5px * var(--game-scale));
-  border: none;
-  border-radius: 2px;
-  background: #202020;
-  color: white;
-  font-weight: bold;
-  font-size: calc(5vw * var(--game-scale));
-}
-
-.btnMenuOption:hover {
-  filter: brightness(1.3);
-}
-
-.btnMenuOption:focus{
-  filter: brightness(1.5);
 }

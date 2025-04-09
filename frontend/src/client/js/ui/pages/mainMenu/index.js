@@ -1,4 +1,5 @@
 import mainMenu from "./index.html?raw"
+import style from "./style.css?raw"
 import "../../components/button/index.js";
 
 class MainMenu extends HTMLElement {
@@ -8,7 +9,16 @@ class MainMenu extends HTMLElement {
     }
 
     connectedCallback() {
+        const sheet = new CSSStyleSheet();
+        sheet.replaceSync(style);
+        this.shadowRoot.adoptedStyleSheets = [sheet];
         this.shadowRoot.innerHTML = mainMenu;
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (oldValue !== newValue) {
+            this.connectedCallback();
+        }
     }
 }
 

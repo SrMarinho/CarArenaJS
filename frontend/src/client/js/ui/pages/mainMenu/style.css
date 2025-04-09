@@ -1,0 +1,5 @@
+.gameUIInside {
+    position: absolute;
+    left: calc(-50vw * var(--game-scale));
+    top: calc(-50vw * var(--game-scale) * var(--aspect-ratio));
+}

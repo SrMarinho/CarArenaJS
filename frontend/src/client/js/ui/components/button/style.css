@@ -13,6 +13,7 @@
     color: white;
     font-weight: bold;
     font-size: calc(5vw * var(--game-scale));
+    gap: 10px;
 }
 
 .btnMenuOption:hover {
