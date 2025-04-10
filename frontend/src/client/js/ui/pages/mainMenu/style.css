@@ -1,5 +1,11 @@
 .gameUIInside {
     position: absolute;
-    left: calc(-50vw * var(--game-scale));
-    top: calc(-50vw * var(--game-scale) * var(--aspect-ratio));
+    left: calc(-45vw * var(--game-scale));
+    top: calc(var(--game-scale) * var(--aspect-ratio));
+    transform: translate(0, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: calc(2vw * var(--game-scale));
 }
