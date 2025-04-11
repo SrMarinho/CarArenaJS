@@ -1,6 +1,6 @@
 :root {
   --aspect-ratio: 9/16;
-  --game-scale: 1;
+  --game-scale: 0.2;
 }
 
 * {
