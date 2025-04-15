@@ -19,7 +19,7 @@ class Game {
         this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
         this.composer = new EffectComposer(this.renderer);
         this.currentLevel = null;
-        this.status = GameState.MAIN_MENU;
+        this.status = null;
 
         window.addEventListener('resize', this.resize.bind(this));
 

@@ -3,7 +3,7 @@ import style from "./style.css?raw"
 import "../../components/button/index.js";
 import { GameState } from "../../../data/gameState.js";
 
-class MainMenu extends HTMLElement {
+class InRoom extends HTMLElement {
     static get observedAttributes() {
         return ['changeState'];
     }
@@ -19,7 +19,7 @@ class MainMenu extends HTMLElement {
         this.shadowRoot.adoptedStyleSheets = [sheet];
         this.shadowRoot.innerHTML = mainMenu;
         
-        this.setup();
+        this.setup()
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -29,18 +29,15 @@ class MainMenu extends HTMLElement {
     }
 
     setup() {
-        const btnCreateRoom = this.shadowRoot.querySelector("#btnCreateRoom")
-        const btnJoinRoom = this.shadowRoot.querySelector("#btnJoinRoom")
+        if (!this.changeState) return;
 
-        btnCreateRoom?.addEventListener("click", () => {
-            this.changeState(GameState.IN_ROOM)
-        })
+        const btnMainMenu = this.shadowRoot.querySelector("#btnMainMenu")
 
-        btnJoinRoom?.addEventListener("click", () => {
-            this.changeState(GameState.MATCH_JOIN)
+        btnMainMenu?.addEventListener("click", () => {
+            this.changeState(GameState.MAIN_MENU)
         })
     }
 }
 
-customElements.define('main-menu', MainMenu);
-export default MainMenu;
+customElements.define('in-room', InRoom);
+export default InRoom;

@@ -9,19 +9,12 @@
     padding-top: calc(5px * var(--game-scale));
     padding-bottom: calc(5px * var(--game-scale));
     border: none;
-    border-radius: 2px;
-    background: rgba(250, 250, 250, 0.4);
+    background: #202020;
     font-weight: bold;
     font-size: calc(5vw * var(--game-scale));
-    gap: 10px;
-    clip-path: polygon(0% 0%, 
-                        calc(100% - var(--cp-cut-size)) 0%, 
-                        100% calc(2 * var(--cp-cut-size)), 
-                        100% calc(100% - (2 * var(--cp-cut-size))), 
-                        100% 100%, 
-                        var(--cp-cut-size) 100%, 
-                        0% calc(100% - (2 * var(--cp-cut-size)))
-                    );
+    gap: calc(var(--game-scale) * 10px);
+    outline: calc(var(--game-scale) * 7px) solid var(--secondary-color);
+    color: var(--secondary-color);
 }
 
 .btnMenuOption:hover {

@@ -1,10 +1,12 @@
 import { GameState } from "../data/gameState";
 import { ws, sendMessage } from "../network/websocket";
 import GameMainMenuStrategy from "../strategies/game_main_menu_strategy";
+import GameInRoomStrategy from "../strategies/game_in_room_strategy copy";
 
 // Mapa de estratégias associadas aos estados do jogo
 const strategies = {
-    [GameState.MAIN_MENU]: () => new GameMainMenuStrategy(),
+    [GameState.MAIN_MENU]: GameMainMenuStrategy,
+    [GameState.IN_ROOM]: GameInRoomStrategy,
     // [GameState.IN_GAME]: () => new GameInGameStrategy(),
 };
 
@@ -20,7 +22,7 @@ class GameMediator {
     setup() {
         this.game.setMediator(this);
         this.ui.setMediator(this);
-        this.setState(GameState.MAIN_MENU);
+        this.setState(GameState.IN_ROOM);
     }
 
     setState(state) {
@@ -30,9 +32,10 @@ class GameMediator {
         this.game.status = state;
         this.ui.status = state;
 
-        const strategyFactory = strategies[state];
-        if (strategyFactory) {
-            this.activeStateHandler = strategyFactory();
+        const strategy = strategies[state];
+
+        if (strategy) {
+            this.activeStateHandler = new strategy();
             this.activeStateHandler.game = this.game;
             this.activeStateHandler.ui = this.ui;
             this.activeStateHandler.run();

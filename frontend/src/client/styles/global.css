@@ -1,6 +1,7 @@
 :root {
   --aspect-ratio: 9/16;
-  --game-scale: 0.2;
+  --game-scale: 0.3;
+  --secondary-color: #DC143C;
 }
 
 * {

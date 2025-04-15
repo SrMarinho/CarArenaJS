@@ -1,25 +1,23 @@
 import { GameState } from "../data/gameState";
 import './pages/mainMenu';
+import './pages/inRoom';
 
 class UI {
     constructor() {
         this.gameUI = document.getElementById('gameUI');
         if (!this.gameUI) throw new Error("Elemento 'gameUI' não encontrado");
         this.mediator = null;
-        this.status = GameState.MAIN_MENU;
+        this.status = null;
         this.lastStatus = null;
+
+        this.changeState = this.changeState.bind(this);
+        this.update = this.update.bind(this);
+
         this.update();
     }
 
     setMediator(mediator) {
         this.mediator = mediator;
-    }
-
-    changeState(state, data = {}) {
-        if (!this.mediator) return;
-        this.status = state;
-        this.mediator.notify("ui", state, data);
-        this.update();
     }
 
     syncState(state) {
@@ -34,9 +32,8 @@ class UI {
         this.clear();
         switch (this.status) {
             case GameState.MAIN_MENU: this.renderMainMenu(); break;
-            case GameState.MATCH_CREATION: this.renderMatchCreation(); break;
-            case GameState.JOIN_MATCH: this.renderJoinMatch(); break;
             case GameState.IN_ROOM: this.renderInRoom(); break;
+            case GameState.JOIN_MATCH: this.renderJoinMatch(); break;
             case GameState.LOBBY: this.renderLobby(); break;
             case GameState.CONFIGURATIONS: this.renderConfigurations(); break;
             default: this.renderUnknownState();
@@ -44,18 +41,26 @@ class UI {
         this.lastStatus = this.status;
     }
 
-    renderMainMenu() {
-        this.clear();
-        
-        const menu = document.createElement('main-menu');
-        
-        this.gameUI.appendChild(menu);
+    changeState(state, data = {}) {
+        this.status = state;
+        if (this.mediator) {
+            this.mediator.notify("ui", state, data);
+        }
+        this.update();
     }
 
-    renderMatchCreation() {
-        this.clear()
-        this.addButton(this.gameUI, 'Confirm Creation', () => this.mediator.notify("ui", "createMatch"));
-        this.addButton(this.gameUI, 'Back to Main Menu', () => this.changeState(GameState.MAIN_MENU));
+    renderMainMenu() {
+        const page = document.createElement('main-menu');
+        page.changeState = this.changeState
+        
+        this.gameUI.appendChild(page);
+    }
+
+    renderInRoom(data = {}) {
+        const page = document.createElement('in-room');
+        page.changeState = this.changeState
+        
+        this.gameUI.appendChild(page);
     }
 
     renderJoinMatch() {
@@ -63,12 +68,6 @@ class UI {
         const matchCodeInput = this.addInput(this.gameUI, 'Match Code', 'text', 'Digite o código da partida');
         this.addButton(this.gameUI, 'Join', () => this.handleJoinMatch(matchCodeInput.value));
         this.addButton(this.gameUI, 'Back to Main Menu', () => this.changeState(GameState.MAIN_MENU));
-    }
-
-    renderInRoom(data = {}) {
-        this.clear()
-        this.addButton(this.gameUI, 'Start Match', () => this.mediator.notify("ui", "startMatch"));
-        this.addButton(this.gameUI, 'Leave Room', () => this.changeState(GameState.MAIN_MENU));
     }
 
     renderLobby() {

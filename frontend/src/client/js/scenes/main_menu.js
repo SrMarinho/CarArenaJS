@@ -109,11 +109,11 @@ class MainMenu {
 
         this.camera.position.set(3.22, 2.50, -6.81)
         this.camera.rotation.set(-2.80, -0.30, 2.99)
-        // this.objControl = objController(this.camera)
+        this.objControl = objController(this.camera)
     }
     
     update() {
-        this.camera.rotation.set(-2.80, -0.30, 2.99)
+        // this.camera.rotation.set(-2.80, -0.30, 2.99)
         if (this.objControl) {
             this.objControl.update()
         }
