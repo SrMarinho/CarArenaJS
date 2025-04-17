@@ -20,13 +20,6 @@ class UI {
         this.mediator = mediator;
     }
 
-    syncState(state) {
-        if (this.status !== state) {
-            this.status = state;
-            this.update();
-        }
-    }
-
     update() {
         if (this.status === this.lastStatus) return;
         this.clear();

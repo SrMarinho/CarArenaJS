@@ -1,7 +1,7 @@
 import { GameState } from "../data/gameState";
 import { ws, sendMessage } from "../network/websocket";
 import GameMainMenuStrategy from "../strategies/game_main_menu_strategy";
-import GameInRoomStrategy from "../strategies/game_in_room_strategy copy";
+import GameInRoomStrategy from "../strategies/game_in_room_strategy";
 
 // Mapa de estratégias associadas aos estados do jogo
 const strategies = {
